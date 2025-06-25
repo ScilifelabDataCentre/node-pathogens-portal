@@ -8,7 +8,7 @@ More information about PPNs and the Pathogen Data Network (PDN) can be found in 
 
 Information about plans for the year 2025/2026 can be found in our Roadmap (see below).
 
-## Cite this portal
+## Cite this repository
 
 <a href="https://doi.org/10.5281/zenodo.15695579"><img src="https://zenodo.org/badge/919472818.svg" alt="DOI"></a>
 
