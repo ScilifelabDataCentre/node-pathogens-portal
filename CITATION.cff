@@ -1,0 +1,18 @@
+cff-version: 1.0.0
+message: "If you use or reuse this software, please cite it using the following metadata."
+authors:
+- family-names: "Panneerselvam"
+  given-names: "Senthilkumar"
+  orcid: 0009-0000-0846-9530
+- family-names: "Aziz"
+  given-names: "Abdullah"
+  orcid: 0000-0003-4684-4682
+- family-names: "Venkatesh"
+  given-names: "Nalina Hamsaiyni"
+  orcid: 0000-0002-0641-7953 
+- family-names: "Hughes"
+  given-names: "Liane"
+  orcid: 0000-0002-4784-5436
+title: "Pathogens Portal Node toolbox"
+doi: https://doi.org/10.5281/zenodo.15695579
+url: "https://github.com/ScilifelabDataCentre/node-pathogens-portal"
