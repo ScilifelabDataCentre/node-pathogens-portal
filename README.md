@@ -31,9 +31,13 @@ To understand upcoming work, view our [roadmap for 2025/6](https://docs.google.c
   - [Dashboards](#dashboards)
   - [Highlights](#highlights)
   - [Topics](#topics)
+  - [Publications](#publications)
   - [News](#news)
   - [Events](#events)
   - [New content](#new-content)
+  - [Remove content](#remove-content)
+    - [Disabled temporarily](#disabled-temporarily)
+    - [Delete permenantly](#delete-permenantly)
 - [Themes](#themes)
   - [Layout](#layout)
   - [Update theme](#update-theme)
@@ -166,6 +170,30 @@ The above command will create a new file in the `content/topics` directory. Fill
 
 **Note:** In order to include the a dashboard or highlight under a specific topic, you must list that topic in the front matter of the corresponding content.
 
+### Publications
+
+Publications page included in the PPN theme uses `Europe PMC API` to fetch and display 10 recent publications for `query_list` defined in the config file `hugo.yaml`. The configurations related to this page should be set in `params.publications` section of the config file. For instance, if you see the config file in the repo
+
+```yaml
+params:
+   publications:
+      country: "Sweden"
+      # It is important to use "" (double quotes) within the query string
+      query_list:
+         covid-19: 'ABSTRACT:("sars-cov-2" OR "covid-19")'
+         influenza: 'ABSTRACT:"influenza"'
+      # Optional setting
+      category_display: "list"
+```
+
+`country` - Should be the same country as the node, only publications affiliated with the specified country is retrieved.
+
+`query_list` - List of _keyword_ and _query string_ of users choice, the _keyword_ is used for category (navigation) in the rendered page and _query string_ is used by the _Europe PMC API_ to fetch publications. Mentioned above _(covid-19 and influenza)_ is just an example, the user should decide relavant keywords/categories and their query string.
+
+**NOTE:** While setting the query string for a keyword in should be enclosed within `''` (single quotes), because the query string itself should contain `""` (double quotes) for word matching. To get deep understanding of the query syntax and build efficient query, checkout Europe PMC [documentation](https://europepmc.org/help).
+
+`category_display` - An optional setting to define how the category links are displayed in the rendered page. If this parameter is set to _"dropdown"_, the categories are displayed as a dropdown menu. And if the parameter is set to anything else or if the parameter doesn't exist in the config file, the categories are displayed as list links on the side.
+
 ### News
 
 News articles are updates regarding the portal, and perhaps other relevant information/news from the area in which the node is based. For example, the Swedish node also posts news about outbreaks in Sweden. To add a news article, run the following command from root of the repository on your computer. The `<desired file name>` in the command is the new file you want (but without spaces).
@@ -274,54 +302,88 @@ You can create a section by creating a folder (and index file within it). Adding
 
    **Note:** Here, `services` is used instead of `navbar_main` as the `menu` key. In all cases, you should use the `identifier` used for the section index file (see step 1) as the key.
 
+
+### Remove content
+
+The content included in this toolbox are just suggestions, so it is perfectly resonable to hide/remove the suggested default pages or sections. There are two ways to do it as mentioned below.
+
+#### Disabled temporarily
+
+If you want to not include a page/section temporarily from the website, but you wanna keep the files in the repo for future purpose you can use `ignoreFiles` in the config settings. With this setting you can specify the folder or file name to not include in the built website, below you can find some examples settings.
+
+- To not include the whole `highlights` section
+
+```yaml
+ignoreFiles:
+   - highlights
+```
+
+- To not include only demo highlight 2
+```yaml
+ignoreFiles:
+   - demo2_highlight.md
+```
+
+- To not include the multiple sections (`news` and `events`) and pages (demo highlight 2)
+```yaml
+ignoreFiles:
+   - news
+   - events
+   - demo2_highlight.md
+```
+
+#### Delete permenantly
+
+To remove a default section or page permanatly, the respective folder or file can just be deleted normally.
+
 ## Themes
 
 This repository uses [pathogens portal node theme](https://github.com/ScilifelabDataCentre/node-pathogens-portal-theme). It defines the layout and design for displaying content on the website.
 
 ### Layout
 
-If you want to create a new layout or replace the exisitng layouts, create a `layouts` directory and start filling it with your own layouts for each page. For example,
+#### New layout
 
-- A `layout/dashboards/list.html` file would determine how the `content/dashboards/_index.md` file is displayed
-- A `layout/dashboards/single.html` file will determine how the `content/dashboards/internal_dash.md`, and all other dashboard pages, are displayed
+If you want to create a new layout, create a `layouts` directory and start filling it with your own layouts for each section/page. For example, lets imagine there a content section called _articles_ and to create your own layout you will create a directory `layouts/articles` and in that directory you can have two files
+
+- `list.html` - file would determine how the `content/articles/_index.md` file is displayed
+- `single.html` - file will determine how the `content/articales/<individual files>.md` files are displayed
 
 In order to read more about options with `hugo` layouts, please see the [Hugo documentation](https://gohugo.io/templates/)
+
+#### Edit default
+
+If you want edit/tweak a layout that is included in the PPN theme, you can just copy the respective folders from the theme layout to the project's layout. For example, if you wanna change the _dashboards_ layout included in the theme 
+
+```
+cp -r themes/node-pathogens-portal-theme/layouts/dashboards layouts/
+```
+
+**NOTE:** You create your own _dashboards_ layout using the _"new layout"_ approach mentioned above, but copying the layout from theme will save a lot of time if the intended edit is not a minor change. **Also avoid directly modifying the files in themes directory**.
 
 ### Update theme
 
 The [pathogens portal node theme](https://github.com/ScilifelabDataCentre/node-pathogens-portal-theme) might be updated from time to time. If you would like to pull the latest changes for your own site, follow the steps below.
 
-1. Open a terminal and go to themes folder in the `hugo` project
+1. Open a terminal and go into the repository root
 
    ```
-   cd <hugo project path>/themes/node-pathogens-portal-theme
+   cd <path to repository>
    ```
 
-2. Once in the `themes/node-pathogens-portal-theme`, run
+2. Run the submodule update command, this will pull all latest changes in the theme
 
    ```
-   git checkout main
+   git submodule update --remote
    ```
 
-3. Pull the latest changes
-
-   ```
-   git pull origin main
-   ```
-
-4. Go back to project root again
-
-   ```
-   cd ../..
-   ```
-
-5. Add this change so that the lastest commit of the theme is linked to the hugo repo
+3. Add this change so that the lastest commit of the theme is linked to this repository
 
    ```
    git add themes/node-pathogens-portal-theme
    ```
 
-6. Commit the change and push to remote as usual
+4. Commit the change and push to remote as usual
 
    ```
    git commit -m "Updated the theme"

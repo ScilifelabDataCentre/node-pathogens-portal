@@ -4,7 +4,7 @@ menu:
   navbar_main:
     name: Topics
     identifier: topics
-    weight: 4
+    weight: 5
     params:
       type: dropdown
       include_parent: true

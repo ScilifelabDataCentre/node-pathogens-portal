@@ -33,6 +33,15 @@ params:
     contact_email: "mail@example.com"
   # Url to github repository, node should keep the URL of their fork
   git_repository: "https://github.com/ScilifelabDataCentre/node-pathogens-portal"
+  # Publications related configuration
+  publications:
+    country: "Sweden"
+    # It is important to use "" (double quotes) within the query string
+    query_list:
+      covid-19: 'ABSTRACT:("sars-cov-2" OR "covid-19")'
+      influenza: 'ABSTRACT:"influenza"'
+    # Optional setting
+    category_display: "list"
 
 taxonomies:
   highlights_topic: highlights_topics
@@ -56,4 +65,3 @@ related:
       weight: 100
       threshold: 80
       toLower: false
-
