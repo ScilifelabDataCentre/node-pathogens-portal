@@ -34,8 +34,8 @@ To understand upcoming work, view our [roadmap for 2025/6](https://docs.google.c
   - [Publications](#publications)
   - [News](#news)
   - [Events](#events)
-  - [New content](#new-content)
-  - [Remove content](#remove-content)
+  - [How to add New content](#how-to-add-new-content)
+  - [How to remove default content](#how-to-remove-default-content)
     - [Disabled temporarily](#disabled-temporarily)
     - [Delete permenantly](#delete-permenantly)
 - [Themes](#themes)
@@ -168,11 +168,13 @@ hugo new content topics/<desired file name>.md
 
 The above command will create a new file in the `content/topics` directory. Fill in the front end matter (i.e. the variables at the top of the file and between the two `---`) with appropriate value, and start writing your content.
 
-**Note:** In order to include the a dashboard or highlight under a specific topic, you must list that topic in the front matter of the corresponding content.
+**Note:** In order to include a dashboard or highlight under a specific topic, you must list that topic in the front matter of the corresponding content.
 
 ### Publications
 
-Publications page included in the PPN theme uses `Europe PMC API` to fetch and display 10 recent publications for `query_list` defined in the config file `hugo.yaml`. The configurations related to this page should be set in `params.publications` section of the config file. For instance, if you see the config file in the repo
+The publications page included in the PPN theme uses the `Europe PMC API` to fetch and display relevant publications. In particular, it shows 10 recent publications for each of the pathogens given in `query_list`. The publications will all involve a researcher affiliated with a specified nation, which should be specified under `country`.
+
+The configurations related to this page should be set in the `params.publications` section of the `hugo.yaml` config file. See below for an example:
 
 ```yaml
 params:
@@ -186,13 +188,13 @@ params:
       category_display: "list"
 ```
 
-`country` - Should be the same country as the node, only publications affiliated with the specified country is retrieved.
+`country` - Should be set as the relevant nation for the node. Here, the country is set to 'Sweden', so publications including researchers affiliated with Swedish institutions will be shown.
 
-`query_list` - List of _keyword_ and _query string_ of users choice, the _keyword_ is used for category (navigation) in the rendered page and _query string_ is used by the _Europe PMC API_ to fetch publications. Mentioned above _(covid-19 and influenza)_ is just an example, the user should decide relavant keywords/categories and their query string.
+`query_list` - List of _keyword_ and _query string_ to define the pathogens that publications should related to, and what search should be used to identify relevant publications. The _keyword_ is used for category (navigation) in the rendered page. This means that it will be what shows in the filter on the page in the PPN. The _query string_ is used by the _Europe PMC API_ to search publications for relevant keywords. For example, here,  the abstracts of papers are searched for the terms 'SARS-CoV-2' OR 'COVID-19' to identify papers related to COVID-19.  Any pathogen can be listed here, at the users discretion.
 
-**NOTE:** While setting the query string for a keyword in should be enclosed within `''` (single quotes), because the query string itself should contain `""` (double quotes) for word matching. To get deep understanding of the query syntax and build efficient query, checkout Europe PMC [documentation](https://europepmc.org/help).
+**NOTE:** When setting the query string for a keyword, it should be enclosed within `''` (single quotes), because the query string itself should contain `""` (double quotes) for word matching. To get deep understanding of the query syntax and build efficient query, see the Europe PMC [documentation](https://europepmc.org/help).
 
-`category_display` - An optional setting to define how the category links are displayed in the rendered page. If this parameter is set to _"dropdown"_, the categories are displayed as a dropdown menu. And if the parameter is set to anything else or if the parameter doesn't exist in the config file, the categories are displayed as list links on the side.
+`category_display` - An optional setting to define how the category links (i.e. the list of pathogens) are displayed in the rendered page. If this parameter is set to _"dropdown"_, the categories are displayed as a dropdown menu. If the parameter is set to anything else or if the parameter is not included in the config file, the category links are displayed as a list of links on the side.
 
 ### News
 
@@ -225,7 +227,7 @@ The events page consists of a list of upcoming events, including training. To ad
 
 **Tip:** As time progresses, the data file might get very large if no expired events are removed. It may therefore be better to remove expired events from time to time, or when you add a new event.
 
-### New content
+### How to add New content
 
 You can add new content to the node by creating a file (for single pages, e.g. an about page, or contact page) or folder (for a section that contains multiple similar types of pages, e.g. dashboards, news).
 
@@ -303,28 +305,28 @@ You can create a section by creating a folder (and index file within it). Adding
    **Note:** Here, `services` is used instead of `navbar_main` as the `menu` key. In all cases, you should use the `identifier` used for the section index file (see step 1) as the key.
 
 
-### Remove content
+### How to remove default content
 
-The content included in this toolbox are just suggestions, so it is perfectly resonable to hide/remove the suggested default pages or sections. There are two ways to do it as mentioned below.
+Not all of the sections/pages provided in the PPN Toolbox will be relevant for all PPNs. Irrelevant/unwanted sections/pages can either be disabled temporarily or permanently removed by following the instructions below.
 
 #### Disabled temporarily
 
-If you want to not include a page/section temporarily from the website, but you wanna keep the files in the repo for future purpose you can use `ignoreFiles` in the config settings. With this setting you can specify the folder or file name to not include in the built website, below you can find some examples settings.
+If you do not want to display a page/section, but think that you might want to display it later, then you can temporarily disable it. Temporarily disabling the page/section will ensure that the relevant files/code will remain in your repository, making them easy to activate later. In order to temporarily disable a page/section, list it under `ignoreFiles` in the config settings.
 
-- To not include the whole `highlights` section
+-  For example, to disable the `highlights` section:
 
 ```yaml
 ignoreFiles:
    - highlights
 ```
 
-- To not include only demo highlight 2
+- To disable the 'demo highlight 2' page within the highlight section:
 ```yaml
 ignoreFiles:
    - demo2_highlight.md
 ```
 
-- To not include the multiple sections (`news` and `events`) and pages (demo highlight 2)
+- To disable multiple sections (`news` and `events`) and pages (demo highlight 2):
 ```yaml
 ignoreFiles:
    - news
@@ -332,34 +334,34 @@ ignoreFiles:
    - demo2_highlight.md
 ```
 
-#### Delete permenantly
+#### Delete permanently
 
-To remove a default section or page permanatly, the respective folder or file can just be deleted normally.
+To remove a section/page permanently, the respective folder or file can be deleted from the repository.
 
 ## Themes
 
-This repository uses [pathogens portal node theme](https://github.com/ScilifelabDataCentre/node-pathogens-portal-theme). It defines the layout and design for displaying content on the website.
+This repository uses the [pathogens portal node theme](https://github.com/ScilifelabDataCentre/node-pathogens-portal-theme). It defines the layout and design for displaying content on the website.
 
 ### Layout
 
 #### New layout
 
-If you want to create a new layout, create a `layouts` directory and start filling it with your own layouts for each section/page. For example, lets imagine there a content section called _articles_ and to create your own layout you will create a directory `layouts/articles` and in that directory you can have two files
+If you want to create a new layout, create a `layouts` directory and start filling it with your own layouts for each section/page. For example, let's imagine there is a content section called _articles_. To create your own layout for that section, you need to create a directory `layouts/articles`. In that directory, you can have two files:
 
-- `list.html` - file would determine how the `content/articles/_index.md` file is displayed
-- `single.html` - file will determine how the `content/articales/<individual files>.md` files are displayed
+- `list.html` - this file would determine how the `content/articles/_index.md` file is displayed
+- `single.html` - this file would determine how the `content/articles/<individual file name>.md` files are displayed
 
 In order to read more about options with `hugo` layouts, please see the [Hugo documentation](https://gohugo.io/templates/)
 
 #### Edit default
 
-If you want edit/tweak a layout that is included in the PPN theme, you can just copy the respective folders from the theme layout to the project's layout. For example, if you wanna change the _dashboards_ layout included in the theme 
+If you want to edit a layout that is included in the PPN theme, you can copy the respective folders from the theme layout in to the project's layout. For example, if you want to change the _dashboards_ layout included in the PPN theme:
 
 ```
 cp -r themes/node-pathogens-portal-theme/layouts/dashboards layouts/
 ```
 
-**NOTE:** You create your own _dashboards_ layout using the _"new layout"_ approach mentioned above, but copying the layout from theme will save a lot of time if the intended edit is not a minor change. **Also avoid directly modifying the files in themes directory**.
+**NOTE:** You can create your own _dashboards_ layout using the _"new layout"_ approach mentioned above. However, copying the layout from PPN theme will save a lot of time if major changes are needed. **Please avoid directly modifying the files in themes directory**.
 
 ### Update theme
 

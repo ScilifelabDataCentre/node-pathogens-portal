@@ -7,6 +7,6 @@ menu:
     weight: 4
 ---
 
-This page lists the publications in Europe PMC with node coutry's affliation and interested query. Read the <a target="_blank" href="https://github.com/ScilifelabDataCentre/node-pathogens-portal?tab=readme-ov-file#publications">guidelines</a> for more information on how to customise.
+This page lists the publications in Europe PMC that involve a researcher affiliated to the relevant nation, and are about particular pathogens. Read the <a target="_blank" href="https://github.com/ScilifelabDataCentre/node-pathogens-portal?tab=readme-ov-file#publications">guidelines</a> for more information on how to customise this query.
 
-**Note:** Below it displays publications with Swedish affliation for example categories set in `publications` section in _Hugo_ config file. Change the `country` and `query_list` as required.
+**Note:** Below displays publications involving researchers affiliated with a Swedish institution for the categories set in the `publications` section in the _Hugo_ config file. Change the `country` and `query_list` as required.
