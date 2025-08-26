@@ -357,9 +357,17 @@ In order to read more about options with `hugo` layouts, please see the [Hugo do
 
 If you want to edit a layout that is included in the PPN theme, you can copy the respective folders from the theme layout in to the project's layout. For example, if you want to change the _dashboards_ layout included in the PPN theme:
 
-```
-cp -r themes/node-pathogens-portal-theme/layouts/dashboards layouts/
-```
+1. Open a terminal and go into the repository root
+
+   ```
+   cd <path to repository>
+   ```
+
+2. Copy the desired layout from themes (_dashboard_ for example)
+
+   ```
+   cp -r themes/node-pathogens-portal-theme/layouts/dashboards layouts/
+   ```
 
 **NOTE:** You can create your own _dashboards_ layout using the _"new layout"_ approach mentioned above. However, copying the layout from PPN theme will save a lot of time if major changes are needed. **Please avoid directly modifying the files in themes directory**.
 
