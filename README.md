@@ -31,9 +31,13 @@ To understand upcoming work, view our [roadmap for 2025/6](https://docs.google.c
   - [Dashboards](#dashboards)
   - [Highlights](#highlights)
   - [Topics](#topics)
+  - [Publications](#publications)
   - [News](#news)
   - [Events](#events)
-  - [New content](#new-content)
+  - [How to add New content](#how-to-add-new-content)
+  - [How to remove default content](#how-to-remove-default-content)
+    - [Disabled temporarily](#disabled-temporarily)
+    - [Delete permenantly](#delete-permenantly)
 - [Themes](#themes)
   - [Layout](#layout)
   - [Update theme](#update-theme)
@@ -164,7 +168,33 @@ hugo new content topics/<desired file name>.md
 
 The above command will create a new file in the `content/topics` directory. Fill in the front end matter (i.e. the variables at the top of the file and between the two `---`) with appropriate value, and start writing your content.
 
-**Note:** In order to include the a dashboard or highlight under a specific topic, you must list that topic in the front matter of the corresponding content.
+**Note:** In order to include a dashboard or highlight under a specific topic, you must list that topic in the front matter of the corresponding content.
+
+### Publications
+
+The publications page included in the PPN theme uses the `Europe PMC API` to fetch and display relevant publications. In particular, it shows 10 recent publications for each of the pathogens given in `query_list`. The publications will all involve a researcher affiliated with a specified nation, which should be specified under `country`.
+
+The configurations related to this page should be set in the `params.publications` section of the `hugo.yaml` config file. See below for an example:
+
+```yaml
+params:
+   publications:
+      country: "Sweden"
+      # It is important to use "" (double quotes) within the query string
+      query_list:
+         covid-19: 'ABSTRACT:("sars-cov-2" OR "covid-19")'
+         influenza: 'ABSTRACT:"influenza"'
+      # Optional setting
+      category_display: "list"
+```
+
+`country` - Should be set as the relevant nation for the node. Here, the country is set to 'Sweden', so publications including researchers affiliated with Swedish institutions will be shown.
+
+`query_list` - List of _keyword_ and _query string_ to define the pathogens that publications should related to, and what search should be used to identify relevant publications. The _keyword_ is used for category (navigation) in the rendered page. This means that it will be what shows in the filter on the page in the PPN. The _query string_ is used by the _Europe PMC API_ to search publications for relevant keywords. For example, here,  the abstracts of papers are searched for the terms 'SARS-CoV-2' OR 'COVID-19' to identify papers related to COVID-19.  Any pathogen can be listed here, at the users discretion.
+
+**NOTE:** When setting the query string for a keyword, it should be enclosed within `''` (single quotes), because the query string itself should contain `""` (double quotes) for word matching. To get deep understanding of the query syntax and build efficient query, see the Europe PMC [documentation](https://europepmc.org/help).
+
+`category_display` - An optional setting to define how the category links (i.e. the list of pathogens) are displayed in the rendered page. If this parameter is set to _"dropdown"_, the categories are displayed as a dropdown menu. If the parameter is set to anything else or if the parameter is not included in the config file, the category links are displayed as a list of links on the side.
 
 ### News
 
@@ -197,7 +227,7 @@ The events page consists of a list of upcoming events, including training. To ad
 
 **Tip:** As time progresses, the data file might get very large if no expired events are removed. It may therefore be better to remove expired events from time to time, or when you add a new event.
 
-### New content
+### How to add New content
 
 You can add new content to the node by creating a file (for single pages, e.g. an about page, or contact page) or folder (for a section that contains multiple similar types of pages, e.g. dashboards, news).
 
@@ -274,54 +304,96 @@ You can create a section by creating a folder (and index file within it). Adding
 
    **Note:** Here, `services` is used instead of `navbar_main` as the `menu` key. In all cases, you should use the `identifier` used for the section index file (see step 1) as the key.
 
+
+### How to remove default content
+
+Not all of the sections/pages provided in the PPN Toolbox will be relevant for all PPNs. Irrelevant/unwanted sections/pages can either be disabled temporarily or permanently removed by following the instructions below.
+
+#### Disabled temporarily
+
+If you do not want to display a page/section, but think that you might want to display it later, then you can temporarily disable it. Temporarily disabling the page/section will ensure that the relevant files/code will remain in your repository, making them easy to activate later. In order to temporarily disable a page/section, list it under `ignoreFiles` in the config settings.
+
+-  For example, to disable the `highlights` section:
+
+```yaml
+ignoreFiles:
+   - highlights
+```
+
+- To disable the 'demo highlight 2' page within the highlight section:
+```yaml
+ignoreFiles:
+   - demo2_highlight.md
+```
+
+- To disable multiple sections (`news` and `events`) and pages (demo highlight 2):
+```yaml
+ignoreFiles:
+   - news
+   - events
+   - demo2_highlight.md
+```
+
+#### Delete permanently
+
+To remove a section/page permanently, the respective folder or file can be deleted from the repository.
+
 ## Themes
 
-This repository uses [pathogens portal node theme](https://github.com/ScilifelabDataCentre/node-pathogens-portal-theme). It defines the layout and design for displaying content on the website.
+This repository uses the [pathogens portal node theme](https://github.com/ScilifelabDataCentre/node-pathogens-portal-theme). It defines the layout and design for displaying content on the website.
 
 ### Layout
 
-If you want to create a new layout or replace the exisitng layouts, create a `layouts` directory and start filling it with your own layouts for each page. For example,
+#### New layout
 
-- A `layout/dashboards/list.html` file would determine how the `content/dashboards/_index.md` file is displayed
-- A `layout/dashboards/single.html` file will determine how the `content/dashboards/internal_dash.md`, and all other dashboard pages, are displayed
+If you want to create a new layout, create a `layouts` directory and start filling it with your own layouts for each section/page. For example, let's imagine there is a content section called _articles_. To create your own layout for that section, you need to create a directory `layouts/articles`. In that directory, you can have two files:
+
+- `list.html` - this file would determine how the `content/articles/_index.md` file is displayed
+- `single.html` - this file would determine how the `content/articles/<individual file name>.md` files are displayed
 
 In order to read more about options with `hugo` layouts, please see the [Hugo documentation](https://gohugo.io/templates/)
+
+#### Edit default
+
+If you want to edit a layout that is included in the PPN theme, you can copy the respective folders from the theme layout in to the project's layout. For example, if you want to change the _dashboards_ layout included in the PPN theme:
+
+1. Open a terminal and go into the repository root
+
+   ```
+   cd <path to repository>
+   ```
+
+2. Copy the desired layout from themes (_dashboard_ for example)
+
+   ```
+   cp -r themes/node-pathogens-portal-theme/layouts/dashboards layouts/
+   ```
+
+**NOTE:** You can create your own _dashboards_ layout using the _"new layout"_ approach mentioned above. However, copying the layout from PPN theme will save a lot of time if major changes are needed. **Please avoid directly modifying the files in themes directory**.
 
 ### Update theme
 
 The [pathogens portal node theme](https://github.com/ScilifelabDataCentre/node-pathogens-portal-theme) might be updated from time to time. If you would like to pull the latest changes for your own site, follow the steps below.
 
-1. Open a terminal and go to themes folder in the `hugo` project
+1. Open a terminal and go into the repository root
 
    ```
-   cd <hugo project path>/themes/node-pathogens-portal-theme
+   cd <path to repository>
    ```
 
-2. Once in the `themes/node-pathogens-portal-theme`, run
+2. Run the submodule update command, this will pull all latest changes in the theme
 
    ```
-   git checkout main
+   git submodule update --remote
    ```
 
-3. Pull the latest changes
-
-   ```
-   git pull origin main
-   ```
-
-4. Go back to project root again
-
-   ```
-   cd ../..
-   ```
-
-5. Add this change so that the lastest commit of the theme is linked to the hugo repo
+3. Add this change so that the lastest commit of the theme is linked to this repository
 
    ```
    git add themes/node-pathogens-portal-theme
    ```
 
-6. Commit the change and push to remote as usual
+4. Commit the change and push to remote as usual
 
    ```
    git commit -m "Updated the theme"
